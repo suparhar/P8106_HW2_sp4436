@@ -1,0 +1,44 @@
+---
+title: "HW2"
+author: "Sukhman Parhar"
+date: "2026-03-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set
+
+library(tidyverse)
+library(ISLR)
+library(glmnet)
+library(caret)
+library(tidymodels)
+library(corrplot)
+library(ggplot2)
+library(plotmo)
+library(ggrepel)
+library(pls)
+```
+
+## load and clean the data
+
+```{r}
+# Load in the data 
+college <- read_csv("College.csv")
+
+# look at the data
+#str(college)
+#dim(college)
+#summary(college)
+#colSums(is.na(college))
+
+# clean the data
+
+# remove college var
+college$College <- NULL
+
+# cap grad rate at 100% anything above is impossible
+college <- college[college$Grad.Rate <= 100, ]
+```
+
+## 
