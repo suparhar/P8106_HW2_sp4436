@@ -383,8 +383,14 @@ college$College &lt;- NULL
 # cap grad rate at 100% anything above is impossible
 college &lt;- college[college$Grad.Rate &lt;= 100, ]</code></pre>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+<div id="data-partition" class="section level2">
+<h2>Data partition</h2>
+<pre class="r"><code>set.seed(2)
+
+data_split &lt;- initial_split(college, prop = 0.8)
+
+training_data &lt;- training(data_split)
+testing_data  &lt;- testing(data_split)</code></pre>
 </div>
 
 

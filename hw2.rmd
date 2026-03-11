@@ -41,4 +41,14 @@ college$College <- NULL
 college <- college[college$Grad.Rate <= 100, ]
 ```
 
-## 
+## Data partition
+
+```{r}
+set.seed(2)
+
+data_split <- initial_split(college, prop = 0.8)
+
+training_data <- training(data_split)
+testing_data  <- testing(data_split)
+```
+
