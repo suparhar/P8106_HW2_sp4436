@@ -18,6 +18,10 @@ library(ggplot2)
 library(plotmo)
 library(ggrepel)
 library(pls)
+library(pdp)
+library(earth)
+library(splines)
+library(mgcv)
 ```
 
 ## load and clean the data
@@ -52,3 +56,61 @@ training_data <- training(data_split)
 testing_data  <- testing(data_split)
 ```
 
+## Question 1: Smoothing Spline Models 
+
+```{r}
+# predictor and response
+x <- training_data$Top10perc
+y <- training_data$Outstate
+
+# smoothing splines with different df
+fit3  <- smooth.spline(x, y, df = 3)
+fit5  <- smooth.spline(x, y, df = 5)
+fit7  <- smooth.spline(x, y, df = 7)
+fit10 <- smooth.spline(x, y, df = 10)
+```
+
+##
+Plot the lines
+
+```{r}
+plot(x, y,
+     col = "grey",
+     pch = 16,
+     xlab = "Top10perc",
+     ylab = "Outstate")
+
+lines(predict(fit3), col = "blue", lwd = 2)
+lines(predict(fit5), col = "green", lwd = 2)
+lines(predict(fit7), col = "orange", lwd = 2)
+lines(predict(fit10), col = "red", lwd = 2)
+
+legend("topleft",
+       legend = c("df=3","df=5","df=7","df=10"),
+       col = c("blue","green","orange","red"),
+       lwd = 2)
+```
+
+##
+Find optimal fit 
+
+```{r}
+fit.opt <- smooth.spline(training_data$Top10perc,
+                         training_data$Outstate)
+
+fit.opt$df
+
+plot(training_data$Top10perc,
+     training_data$Outstate,
+     col = "grey",
+     pch = 16,
+     xlab = "Top10perc",
+     ylab = "Outstate")
+
+lines(fit.opt, col = "black", lwd = 3)
+```
+
+##
+When we increase the df the smoothing spline becomes more flexible and follows the data more. Meaning that the lines we see for lower df are smoother and higher df curve more. 
+
+The optimal degree of freedom was selected using generalized cross-validation through the smooth.spline() function. The appropriate df was 2.29 which means there is a smooth relationship between Top10perc and Outstate tuition.
